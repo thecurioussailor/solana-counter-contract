@@ -28,6 +28,8 @@ fn process_instruction(
 ) -> ProgramResult {
     let acc = next_account_info(&mut accounts.iter())?;
     let mut counter_data = Counter::try_from_slice(&acc.data.borrow())?;
+    let instruction_type = InstructionType::try_from_slice(instruction_data)
+    .map_err(|_| ProgramError::InvalidInstructionData)?;
     match instruction_type {
         InstructionType::Increment(value) => {
             msg!("Incrementing counter by: {}", value);
